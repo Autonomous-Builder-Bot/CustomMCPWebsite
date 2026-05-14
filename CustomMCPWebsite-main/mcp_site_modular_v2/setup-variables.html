@@ -21,6 +21,43 @@
     </header>
 
     <main>
+      <section>
+        <div class="section-heading">
+          <h2>Quick Render Environment Setup</h2>
+          <p>Paste your Render backend URL, generate secrets, then copy all variables into Render using Add from .env.</p>
+        </div>
+        <div class="content-card">
+          <div class="secret-grid">
+            <div>
+              <label class="secret-label" for="quick-render-url">Your Render backend URL</label>
+              <input class="code-input" id="quick-render-url" type="url" placeholder="https://your-service-name.onrender.com" autocomplete="off" style="margin-top:10px;" />
+              <div class="small-note" id="quick-url-status" style="margin-top:8px;">Paste your Render backend URL to replace placeholder URL values in the preview.</div>
+            </div>
+            <div>
+              <button class="button primary" id="quick-generate-secrets" type="button">Generate secrets</button>
+              <div class="small-note" style="margin-top:8px;">Generated locally in your browser. Not stored. Not sent anywhere.</div>
+            </div>
+            <div class="code-card">
+              <div class="code-card-header">
+                <div>
+                  <strong>Render .env preview</strong>
+                  <div class="code-card-hint">Use Render's Add from .env option with this complete block.</div>
+                </div>
+              </div>
+              <pre id="quick-env-preview"><code></code></pre>
+            </div>
+            <div>
+              <div class="button-row">
+                <button class="button primary" id="quick-copy-all" type="button" style="font-size:1.05rem; padding:14px 18px;">Copy all variables for Render</button>
+                <button class="copy-button" id="quick-copy-secrets" type="button">Copy generated secrets only</button>
+                <button class="copy-button" id="quick-copy-url-vars" type="button">Copy URL variables only</button>
+              </div>
+              <div class="small-note" id="quick-copy-status" style="margin-top:10px;">In Render, open your service Environment page, choose Add from .env, then paste this block.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="grid-2">
         <div class="content-card">
           <h2>Start Here: what this setup does</h2>
@@ -232,6 +269,246 @@
   <script src="assets/app.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const quickUrlInput = document.getElementById('quick-render-url');
+      const quickUrlStatus = document.getElementById('quick-url-status');
+      const quickEnvPreview = document.querySelector('#quick-env-preview code');
+      const quickCopyStatus = document.getElementById('quick-copy-status');
+      const generatedSecrets = {
+        MCP_OAUTH_CLIENT_SECRET: 'click-generate-secrets',
+        MCP_SERVER_BEARER_TOKEN: 'click-generate-secrets',
+        MCP_TOKEN_SIGNING_SECRET: 'click-generate-secrets',
+        OAUTH_STATE_SECRET: 'click-generate-secrets',
+        WORDPRESS_CONNECTOR_SECRET: 'click-generate-secrets',
+        OPENAI_REALTIME_SIP_WEBHOOK_SECRET: 'click-generate-secrets'
+      };
+
+      function normalizeRenderUrl(rawValue) {
+        const trimmed = rawValue.trim().replace(/\/+$/, '');
+        if (!trimmed) {
+          return {
+            valid: false,
+            url: 'https://your-render-service.onrender.com',
+            host: 'your-render-service.onrender.com',
+            message: 'Paste your Render backend URL to replace placeholder URL values in the preview.'
+          };
+        }
+
+        try {
+          const parsed = new URL(trimmed);
+          if (parsed.protocol !== 'https:' || !parsed.hostname) {
+            return {
+              valid: false,
+              url: 'https://your-render-service.onrender.com',
+              host: 'your-render-service.onrender.com',
+              message: 'Use the full https:// Render backend URL, like https://your-service-name.onrender.com.'
+            };
+          }
+
+          return {
+            valid: true,
+            url: parsed.origin,
+            host: parsed.hostname,
+            message: `Using ${parsed.origin}`
+          };
+        } catch (error) {
+          return {
+            valid: false,
+            url: 'https://your-render-service.onrender.com',
+            host: 'your-render-service.onrender.com',
+            message: 'That does not look like a valid URL yet. Use https://your-service-name.onrender.com.'
+          };
+        }
+      }
+
+      function randomSecret(length) {
+        const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789-_';
+        const bytes = new Uint8Array(length);
+        window.crypto.getRandomValues(bytes);
+        return Array.from(bytes, (byte) => alphabet[byte % alphabet.length]).join('');
+      }
+
+      function buildUrlVars(urlState) {
+        return {
+          PUBLIC_BASE_URL: urlState.url,
+          PUBLIC_HOST: urlState.host,
+          MCP_ISSUER: urlState.url,
+          MCP_OAUTH_ALLOWED_REDIRECT_URIS: `${urlState.url}/oauth/callback`,
+          GOOGLE_REDIRECT_URI: `${urlState.url}/oauth/google/callback`
+        };
+      }
+
+      function buildEnvBlock() {
+        const urlState = normalizeRenderUrl(quickUrlInput.value);
+        const urlVars = buildUrlVars(urlState);
+        return `APCA_API_KEY_ID=your-alpaca-api-key-id-here
+APCA_API_SECRET_KEY=your-alpaca-api-secret-key-here
+APCA_ENABLE_LIVE_TRADING=false
+APCA_ENV=paper
+APCA_MARKET_DATA_URL=https://data.alpaca.markets
+APCA_PAPER_BASE_URL=https://paper-api.alpaca.markets
+ENABLE_OAUTH_ROUTES=true
+EXPOSE_ATOMIC_TOOLS=false
+EXPOSE_CATEGORY_TOOLS=true
+EXPOSE_REFRESH_TOKEN_IN_CALLBACK=false
+
+GA4_PROPERTY_ID=your-ga4-property-id-here
+
+GITHUB_API_BASE=https://api.github.com
+GITHUB_DEFAULT_OWNER=your-github-username-or-org-here
+GITHUB_TOKEN=your-github-token-here
+GITHUB_USER_AGENT=your-app-name-here
+
+GOOGLE_ADS_AUTONOMY_MODE=controlled_write
+GOOGLE_ADS_CUSTOMER_ID=your-google-ads-customer-id-here
+GOOGLE_ADS_DEVELOPER_TOKEN=your-google-ads-developer-token-here
+GOOGLE_ADS_LOGIN_CUSTOMER_ID=your-google-ads-login-customer-id-here
+GOOGLE_ADS_USE_PROTO_PLUS=True
+
+GOOGLE_CLIENT_ID=your-google-client-id-here
+GOOGLE_CLIENT_SECRET=your-google-client-secret-here
+GOOGLE_MAPS_API_KEY=your-google-maps-api-key-here
+GOOGLE_REDIRECT_URI=${urlVars.GOOGLE_REDIRECT_URI}
+GOOGLE_REFRESH_TOKEN=your-google-refresh-token-here
+
+GROWTH_AUTONOMY_MODE=controlled_write
+
+MAPS_API_BASE=https://maps.googleapis.com/maps/api
+MAPS_API_KEY=your-google-maps-api-key-here
+
+MAX_MEMORY_ENTRIES=100
+
+MCP_ACCESS_TOKEN_TTL_SECONDS=3600
+MCP_AUTH_CODE_TTL_SECONDS=600
+MCP_ISSUER=${urlVars.MCP_ISSUER}
+MCP_MOUNT_PATH=/mcp
+MCP_OAUTH_ALLOWED_REDIRECT_URIS=${urlVars.MCP_OAUTH_ALLOWED_REDIRECT_URIS}
+MCP_OAUTH_CLIENT_ID=mcp-personal
+MCP_OAUTH_CLIENT_SECRET=${generatedSecrets.MCP_OAUTH_CLIENT_SECRET}
+MCP_OAUTH_ENABLED=true
+MCP_REFRESH_TOKEN_TTL_SECONDS=2592000
+MCP_SERVER_BEARER_TOKEN=${generatedSecrets.MCP_SERVER_BEARER_TOKEN}
+MCP_TOKEN_SIGNING_SECRET=${generatedSecrets.MCP_TOKEN_SIGNING_SECRET}
+
+MEMORY_FILE_PATH=/tmp/memory.json
+
+MERCURY_API_BASE_URL=https://api.mercury.com/api/v1
+MERCURY_API_TOKEN=your-mercury-api-token-here
+MERCURY_AUTONOMY_MODE=controlled_write
+MERCURY_ENABLE_DIRECT_SEND=true
+MERCURY_MAX_ACH_AMOUNT=25
+MERCURY_MAX_CHECK_AMOUNT=25
+MERCURY_MAX_DOMESTIC_WIRE_AMOUNT=25
+MERCURY_MAX_INTERNATIONAL_WIRE_AMOUNT=25
+MERCURY_MAX_PAYMENT_AMOUNT=25
+
+META_ACCESS_TOKEN=your-meta-access-token-here
+META_ADS_AUTONOMY_MODE=controlled_write
+META_AD_ACCOUNT_ID=your-meta-ad-account-id-here
+META_API_VERSION=v19.0
+META_APP_ID=your-meta-app-id-here
+META_APP_SECRET=your-meta-app-secret-here
+META_USE_APPSECRET_PROOF=true
+
+OAUTH_STATE_SECRET=${generatedSecrets.OAUTH_STATE_SECRET}
+
+OPENAI_API_KEY=your-openai-api-key-here
+OPENAI_REALTIME_SIP_ENABLED=true
+OPENAI_REALTIME_SIP_PROJECT_ID=your-openai-project-id-here
+OPENAI_REALTIME_SIP_VOICE=marin
+OPENAI_REALTIME_SIP_WEBHOOK_SECRET=${generatedSecrets.OPENAI_REALTIME_SIP_WEBHOOK_SECRET}
+OPENAI_VOICE_AGENT_MODEL=gpt-4.1-mini
+
+PHONE_SILENCE_HANGUP_MESSAGE="I haven’t heard anything, so I’m going to end the call now. Goodbye."
+PHONE_SILENCE_HANGUP_SECONDS=55
+PHONE_SILENCE_WARNING_MESSAGE="I haven’t heard anything, so I’m going to end the call soon."
+PHONE_SILENCE_WARNING_SECONDS=45
+
+PUBLIC_BASE_URL=${urlVars.PUBLIC_BASE_URL}
+PUBLIC_HOST=${urlVars.PUBLIC_HOST}
+
+PYTHON_VERSION=3.11.9
+
+SEARCH_CONSOLE_SITE_URL=https://your-site-url-here
+
+TWILIO_ACCOUNT_SID=your-twilio-account-sid-here
+TWILIO_AUTH_TOKEN=your-twilio-auth-token-here
+TWILIO_CALL_LOG_SHEET_ID=your-google-sheet-id-here
+TWILIO_CALL_LOG_SHEET_TAB="Call Logs"
+TWILIO_PHONE_NUMBER=your-twilio-phone-number-here
+TWILIO_VOICE_GREETING="Hello, how can I help?"
+
+VOICE_ASSISTANT_NAME="Your Assistant Name"
+VOICE_OWNER_PHONE=your-phone-number-here
+
+WOOCOMMERCE_AUTONOMY_MODE=controlled_write
+
+WORDPRESS_AUTONOMY_MODE=controlled_write
+WORDPRESS_CONNECTOR_SECRET=${generatedSecrets.WORDPRESS_CONNECTOR_SECRET}
+WORDPRESS_CONNECTOR_SITE_ID=your-wordpress-site-id-here
+WORDPRESS_CONNECTOR_SITE_URL=https://your-wordpress-site-url-here`;
+      }
+
+      function updateQuickPreview() {
+        const urlState = normalizeRenderUrl(quickUrlInput.value);
+        if (urlState.valid && quickUrlInput.value.trim().endsWith('/')) {
+          quickUrlInput.value = urlState.url;
+        }
+        quickUrlStatus.textContent = urlState.message;
+        quickUrlStatus.style.color = urlState.valid || !quickUrlInput.value.trim() ? '' : '#ffc266';
+        quickEnvPreview.textContent = buildEnvBlock();
+      }
+
+      function copyQuickText(text, successMessage) {
+        navigator.clipboard.writeText(text).then(() => {
+          quickCopyStatus.textContent = successMessage;
+        }).catch(() => {
+          quickCopyStatus.textContent = 'Copy failed. Select the preview block and copy it manually.';
+        });
+      }
+
+      document.getElementById('quick-generate-secrets').addEventListener('click', () => {
+        generatedSecrets.MCP_OAUTH_CLIENT_SECRET = randomSecret(48);
+        generatedSecrets.MCP_SERVER_BEARER_TOKEN = randomSecret(48);
+        generatedSecrets.MCP_TOKEN_SIGNING_SECRET = randomSecret(64);
+        generatedSecrets.OAUTH_STATE_SECRET = randomSecret(48);
+        generatedSecrets.WORDPRESS_CONNECTOR_SECRET = randomSecret(48);
+        generatedSecrets.OPENAI_REALTIME_SIP_WEBHOOK_SECRET = randomSecret(48);
+
+        const existingSecretFields = {
+          'oauth-client-secret': generatedSecrets.MCP_OAUTH_CLIENT_SECRET,
+          'bearer-secret': generatedSecrets.MCP_SERVER_BEARER_TOKEN,
+          'token-signing-secret': generatedSecrets.MCP_TOKEN_SIGNING_SECRET,
+          'oauth-state-secret': generatedSecrets.OAUTH_STATE_SECRET
+        };
+        Object.keys(existingSecretFields).forEach((id) => {
+          const input = document.getElementById(id);
+          if (input) input.value = existingSecretFields[id];
+        });
+
+        quickCopyStatus.textContent = 'Secrets generated locally. Review the preview, then copy all variables for Render.';
+        updateQuickPreview();
+      });
+
+      document.getElementById('quick-copy-all').addEventListener('click', () => {
+        updateQuickPreview();
+        copyQuickText(quickEnvPreview.textContent.trim(), 'Copied all Render variables.');
+      });
+
+      document.getElementById('quick-copy-secrets').addEventListener('click', () => {
+        const text = Object.keys(generatedSecrets).map((key) => `${key}=${generatedSecrets[key]}`).join('\n');
+        copyQuickText(text, 'Copied generated secrets only.');
+      });
+
+      document.getElementById('quick-copy-url-vars').addEventListener('click', () => {
+        const urlVars = buildUrlVars(normalizeRenderUrl(quickUrlInput.value));
+        const text = Object.keys(urlVars).map((key) => `${key}=${urlVars[key]}`).join('\n');
+        copyQuickText(text, 'Copied URL variables only.');
+      });
+
+      quickUrlInput.addEventListener('input', updateQuickPreview);
+      quickUrlInput.addEventListener('blur', updateQuickPreview);
+      updateQuickPreview();
+
       document.getElementById('root-directory-card').innerHTML = Components.codeCard('Root directory', SITE.env.rootDirectory, 'root-directory', { hint: 'Render Static Site setting' });
       document.getElementById('publish-directory-card').innerHTML = Components.codeCard('Publish directory', SITE.env.renderPublishDirectory, 'publish-directory', { hint: 'Render Static Site setting' });
       document.getElementById('build-card').innerHTML = Components.codeCard('Build command', SITE.env.renderBuild || '(leave blank)', 'build-command', { hint: 'Render Static Site setting' });
