@@ -3,42 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>More Integrations | Personal MCP Server</title>
+  <title>Integrations | Personal AI Worker</title>
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <div data-nav></div>
   <div class="page-shell">
     <header class="page-header">
-      <div class="kicker">More integrations</div>
-      <h1>Additional setup blocks included with the package</h1>
-      <p>These are the same integration blocks listed at the end of the setup guide. They are here in one place if you want a quick reference later.</p>
+      <div class="kicker">Integrations</div>
+      <h1>Connect the AI worker to the tools your business already uses</h1>
+      <p>These are the optional environment variable blocks from the setup guide, grouped for quick reference. Leave anything blank until you are ready to connect that service in Render.</p>
+      <div class="button-row">
+        <a class="button primary" href="setup-variables.html">Read the setup guide</a>
+        <button class="ghost-button" data-buy-package>Buy the AI Worker Starter Package</button>
+      </div>
     </header>
 
     <main>
-      <section class="grid-2">
-        <div class="content-card">
-          <h2>Bearer token fallback</h2>
-          <p>Add this when you want a simple manual token path for testing or scripts.</p>
-          <div id="bearer-card"></div>
+      <section>
+        <div class="section-heading">
+          <h2>Google and GitHub</h2>
+          <p>Core account connections for documents, repos, location tools, and owner-scoped workflows.</p>
         </div>
-        <div class="content-card">
-          <h2>Google service account</h2>
-          <p>Add this when you want to use a service account path instead of the normal refresh-token setup.</p>
-          <div id="service-account-card"></div>
+        <div class="grid-2">
+          <div id="google-oauth-card"></div>
+          <div id="github-card"></div>
+          <div id="google-maps-card"></div>
         </div>
       </section>
-      <section class="grid-2">
-        <div class="content-card">
-          <h2>Google Maps</h2>
-          <p>Add this when you want the Maps-related tools working.</p>
-          <div id="maps-card"></div>
+      <section>
+        <div class="section-heading">
+          <h2>Business operations</h2>
+          <p>Commerce, content, banking, and payment-related variables for workflow support.</p>
         </div>
-        <div class="content-card">
-          <h2>Alpaca</h2>
-          <p>Add this when you want the Alpaca-related tools working.</p>
+        <div class="grid-2">
+          <div id="wordpress-card"></div>
+          <div id="mercury-card"></div>
+        </div>
+      </section>
+      <section>
+        <div class="section-heading">
+          <h2>Voice and phone</h2>
+          <p>Use these for call behavior, Twilio, and OpenAI voice/SIP workflows.</p>
+        </div>
+        <div class="grid-2">
+          <div id="openai-voice-card"></div>
+          <div id="phone-behavior-card"></div>
+          <div id="twilio-card"></div>
+        </div>
+      </section>
+      <section>
+        <div class="section-heading">
+          <h2>Ads, analytics, growth, and finance</h2>
+          <p>Controlled-write and paper-trading defaults are shown where the package starts from safer operating assumptions.</p>
+        </div>
+        <div class="grid-2">
+          <div id="google-ads-card"></div>
+          <div id="analytics-growth-card"></div>
+          <div id="meta-ads-card"></div>
           <div id="alpaca-card"></div>
         </div>
+      </section>
+      <section>
+        <div class="notice warning">These examples intentionally do not include real secrets. Paste live credentials only into Render environment variables.</div>
       </section>
     </main>
   </div>
@@ -48,10 +75,18 @@
   <script src="assets/app.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('bearer-card').innerHTML = Components.codeCard('Bearer token block', SITE.env.bearerBlock, 'bearer', { hint: 'Manual token path' });
-      document.getElementById('service-account-card').innerHTML = Components.codeCard('Service account block', SITE.env.serviceAccountBlock, 'service-account', { hint: 'Use when needed' });
-      document.getElementById('maps-card').innerHTML = Components.codeCard('Maps block', SITE.env.mapsBlock, 'maps', { hint: 'Use when needed' });
-      document.getElementById('alpaca-card').innerHTML = Components.codeCard('Alpaca block', SITE.env.alpacaBlock, 'alpaca', { hint: 'Use when needed' });
+      document.getElementById('google-oauth-card').innerHTML = Components.codeCard('Google OAuth', SITE.env.googleOAuthBlock, 'google-oauth');
+      document.getElementById('github-card').innerHTML = Components.codeCard('GitHub', SITE.env.githubBlock, 'github');
+      document.getElementById('google-maps-card').innerHTML = Components.codeCard('Google Maps', SITE.env.googleMapsBlock, 'google-maps');
+      document.getElementById('wordpress-card').innerHTML = Components.codeCard('WordPress / WooCommerce', SITE.env.wordpressBlock, 'wordpress');
+      document.getElementById('mercury-card').innerHTML = Components.codeCard('Mercury', SITE.env.mercuryBlock, 'mercury');
+      document.getElementById('openai-voice-card').innerHTML = Components.codeCard('OpenAI Voice / Realtime SIP', SITE.env.openAiVoiceBlock, 'openai-voice');
+      document.getElementById('phone-behavior-card').innerHTML = Components.codeCard('Phone silence / call behavior', SITE.env.phoneBehaviorBlock, 'phone-behavior');
+      document.getElementById('twilio-card').innerHTML = Components.codeCard('Twilio', SITE.env.twilioBlock, 'twilio');
+      document.getElementById('google-ads-card').innerHTML = Components.codeCard('Google Ads', SITE.env.googleAdsBlock, 'google-ads');
+      document.getElementById('analytics-growth-card').innerHTML = Components.codeCard('Google Analytics / Growth / Search Console', SITE.env.analyticsGrowthBlock, 'analytics-growth');
+      document.getElementById('meta-ads-card').innerHTML = Components.codeCard('Meta Ads', SITE.env.metaAdsBlock, 'meta-ads');
+      document.getElementById('alpaca-card').innerHTML = Components.codeCard('Alpaca', SITE.env.alpacaBlock, 'alpaca');
     });
   </script>
 </body>
