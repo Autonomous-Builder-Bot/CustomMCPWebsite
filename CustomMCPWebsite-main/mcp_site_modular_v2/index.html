@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Personal MCP Server</title>
-  <meta name="description" content="A ready-to-deploy personal MCP server scaffold with Google and GitHub support, Render deployment notes, and a modular Python tools folder." />
+  <title>Personal AI Worker Starter Package</title>
+  <meta name="description" content="A $19 AI Worker Starter Package that gives your assistant a deployable backend for tools, accounts, MCP infrastructure, and practical business workflows." />
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
@@ -13,42 +13,50 @@
     <header class="hero">
       <div class="hero-grid">
         <div class="hero-card hero-copy">
-          <div class="eyebrow">Built from real use</div>
-          <h1 id="hero-title"></h1>
-          <p id="hero-body"></p>
+          <div class="eyebrow">AI worker foundation</div>
+          <h1 id="hero-title">Give your AI a real workspace</h1>
+          <p id="hero-body">Deploy a practical backend that lets your assistant connect to tools, accounts, and workflows.</p>
           <div class="badge-row">
-            <div class="badge">Google support</div>
-            <div class="badge">GitHub support</div>
-            <div class="badge">Render deployment</div>
-            <div class="badge">Modular Python tools</div>
+            <div class="badge">AI operations backend</div>
+            <div class="badge">MCP infrastructure</div>
+            <div class="badge">Render deployable</div>
+            <div class="badge">$19 one time</div>
           </div>
           <p class="hero-note" id="hero-note"></p>
           <div class="button-row" style="margin-top:22px;">
-            <button class="button primary" data-buy-package>Buy the package</button>
-            <a class="ghost-button" href="setup-variables.html">Open the setup guide</a>
+            <button class="button primary" data-buy-package>Buy the AI Worker Starter Package</button>
+            <a class="ghost-button" href="custom-setup.html">Set up my AI worker</a>
+            <a class="ghost-button" href="setup-variables.html">Read the setup guide</a>
           </div>
         </div>
-        <div class="hero-card hero-visual" aria-hidden="true">
-          <div class="matrix-grid">
-            <div class="matrix-card">
-              <div class="kicker">Why it exists</div>
-              <h3>No blank-repo start</h3>
-              <p>You are buying a usable scaffold, not the idea of one. The MCP structure, auth path, and deployment notes are already laid out.</p>
+        <div class="hero-card hero-visual" aria-label="AI worker workflow preview">
+          <div class="worker-panel">
+            <div class="worker-topline">
+              <span class="status-dot"></span>
+              <span>Personal AI Worker</span>
             </div>
-            <div class="matrix-card">
-              <div class="kicker">Why it helps</div>
-              <h3>Less setup drag</h3>
-              <p>Instead of re-solving the same backend pieces, you fill in your own keys, deploy, and build from something stable.</p>
+            <div class="workflow-stack">
+              <div class="workflow-row">
+                <span>Assistant request</span>
+                <strong>Plan the task</strong>
+              </div>
+              <div class="workflow-row">
+                <span>Backend workspace</span>
+                <strong>Call real tools</strong>
+              </div>
+              <div class="workflow-row">
+                <span>Connected accounts</span>
+                <strong>Use your data</strong>
+              </div>
+              <div class="workflow-row">
+                <span>Business outcome</span>
+                <strong>Finish the workflow</strong>
+              </div>
             </div>
-            <div class="matrix-card">
-              <div class="kicker">What stands out</div>
-              <h3>Easy to extend</h3>
-              <p>Add another Python tool file later, or have an AI help write one. The structure is meant to grow with you.</p>
-            </div>
-            <div class="matrix-card">
-              <div class="kicker">What you do not get</div>
-              <h3>No empty marketing fluff</h3>
-              <p>This is a practical package for people who want a real starting point and a setup they can trust.</p>
+            <div class="mini-terminal">
+              <div>POST /mcp</div>
+              <div>tools: google, github, ads, voice, commerce</div>
+              <div>status: ready for your own keys</div>
             </div>
           </div>
         </div>
@@ -58,57 +66,113 @@
     <main>
       <section>
         <div class="section-heading">
-          <h2>What you can do with it</h2>
-          <p>The goal here is straightforward: give your assistant a backend it can actually use, then leave the project open enough that you can keep extending it.</p>
+          <h2>What this AI worker can help with</h2>
+          <p>Use the package as the backend foundation for assistants that do more than chat. Connect the accounts you choose, then build workflows around the real work you want supported.</p>
+        </div>
+        <div class="grid-3" id="outcome-grid"></div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <h2>Useful work, not just server setup</h2>
+          <p>The technical layer is MCP, OAuth, Python tools, and Render. The practical value is an assistant that can help with operations across your documents, repos, marketing, calls, commerce, and internal workflows.</p>
         </div>
         <div class="grid-2">
           <div class="content-card">
-            <h3>Good fit if you want to</h3>
-            <div id="use-case-list"></div>
+            <h3>Example tasks</h3>
+            <div id="worker-task-list"></div>
           </div>
           <div class="content-card">
-            <h3>Helpful before you buy</h3>
-            <ul class="clean-list">
-              <li>You do not need to understand every variable before starting.</li>
-              <li>The setup guide separates defaults, secrets, and account-based values.</li>
-                          </ul>
+            <h3>Tools and integrations</h3>
+            <div id="integration-list"></div>
           </div>
         </div>
       </section>
 
       <section>
         <div class="section-heading">
-          <h2>Why this is practical</h2>
-          <p>This package is meant to get you to a working deployment faster. The value is simple: you are starting from something useful, documented, and ready to extend.</p>
+          <h2>Who it is for</h2>
+          <p>This is for people who want a practical AI operations employee foundation without buying a complicated platform or starting from an empty repo.</p>
+        </div>
+        <div class="grid-2">
+          <div class="content-card">
+            <h3>Best fit</h3>
+            <div id="audience-list"></div>
+          </div>
+          <div class="content-card">
+            <h3>Why own your backend?</h3>
+            <ul class="clean-list">
+              <li>You decide which tools and accounts the assistant can reach.</li>
+              <li>You keep a deployable base you can extend for new workflows.</li>
+              <li>You can use MCP clients while keeping your own infrastructure underneath.</li>
+              <li>You avoid turning every new AI workflow into another monthly subscription.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <h2>How it works</h2>
+          <p>The flow is intentionally simple: buy the starter package, deploy the backend, paste your own environment variables into Render, then connect your assistant to the tools you want it to use.</p>
+        </div>
+        <div class="grid-4">
+          <div class="content-card">
+            <div class="kicker">1</div>
+            <h3>Get the files</h3>
+            <p>Download the AI Worker Starter Package after purchase and review the setup guide.</p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">2</div>
+            <h3>Deploy the backend</h3>
+            <p>Use Render for the server package and keep this website deployable as a static site.</p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">3</div>
+            <h3>Add your values</h3>
+            <p>Paste real secrets only into Render environment variables, never into public files.</p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">4</div>
+            <h3>Extend workflows</h3>
+            <p>Add tools and integrations as your assistant takes on more useful work.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <h2>What is included</h2>
+          <p>The package keeps the offer concrete: one payment, useful files, practical docs, and a path to custom setup if you want help shaping the worker around your business.</p>
         </div>
         <div class="grid-3" id="feature-grid"></div>
       </section>
 
       <section id="pricing">
         <div class="section-heading">
-          <h2>Pricing</h2>
-          <p>The goal is to keep the main package simple enough that someone can just decide if they want it, rather than comparing tiers and getting stuck.</p>
+          <h2>Start with the $19 package</h2>
+          <p>No tiers to decode. Buy the starter package if you want the deployable foundation, or choose custom setup if you want hands-on help turning it into your AI operations employee.</p>
         </div>
         <div class="plan-stack">
           <article class="plan-card primary-plan">
-            <div class="kicker">Main package</div>
-            <h3>Complete MCP Package</h3>
+            <div class="kicker">Starter package</div>
+            <h3 id="package-name">AI Worker Starter Package</h3>
             <div class="price">$19 one time</div>
             <p id="package-description"></p>
             <div id="package-bullets"></div>
             <div class="button-row" style="margin-top:18px;">
-              <button class="button primary" data-buy-package>Buy the package</button>
-              <a class="ghost-button" href="setup-variables.html">Read the setup guide first</a>
+              <button class="button primary" data-buy-package>Buy the AI Worker Starter Package</button>
+              <a class="ghost-button" href="setup-variables.html">Read the setup guide</a>
             </div>
           </article>
           <article class="plan-card">
-            <div class="kicker">Need more than the package?</div>
-            <h3>Custom Setup</h3>
+            <div class="kicker">Done-with-you path</div>
+            <h3>Custom AI Worker Setup</h3>
             <div class="price">Custom pricing</div>
-            <p>For private APIs, custom tools, a different auth path, or help getting your own setup over the finish line.</p>
+            <p>For people who want help choosing tools, connecting accounts, deploying safely, or designing a worker around a specific business workflow.</p>
             <div id="custom-bullets"></div>
             <div class="button-row" style="margin-top:18px;">
-              <a class="button primary" href="custom-setup.html">See custom help</a>
+              <a class="button primary" href="custom-setup.html">Set up my AI worker</a>
               <a class="ghost-button" href="contact.html">Contact me directly</a>
             </div>
           </article>
@@ -116,36 +180,7 @@
       </section>
 
       <section>
-        <div class="section-heading">
-          <h2>How the setup works</h2>
-          <p>You are not buying a mystery box. The path is simple: get the files, push to GitHub, deploy on Render, fill in your values, and connect your assistant.</p>
-        </div>
-        <div class="grid-2">
-          <div class="content-card">
-            <div class="kicker">1</div>
-            <h3>Download the package</h3>
-            <p>Get the project files and use the guide to follow the same structure shown on this site.</p>
-          </div>
-          <div class="content-card">
-            <div class="kicker">2</div>
-            <h3>Deploy on Render</h3>
-            <p>Push the project to GitHub, connect the repo in Render, then paste the build command, start command, and environment variables.</p>
-          </div>
-          <div class="content-card">
-            <div class="kicker">3</div>
-            <h3>Choose your auth path</h3>
-            <p>Use static OAuth for full MCP client support, or use a simple bearer token path if you just want a more manual fallback.</p>
-          </div>
-          <div class="content-card">
-            <div class="kicker">4</div>
-            <h3>Keep building later</h3>
-            <p>Once it is running, add new tool modules as needed. The structure is the point: you are buying a base you can keep using.</p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="notice warning">Start with the main setup first. Once that is working, you can keep expanding with additional integrations and Python tool modules as needed.</div>
+        <div class="notice warning">Security matters: the public site shows only variable names, safe defaults, and blank placeholders. Put real API keys and secrets only into Render environment variables.</div>
       </section>
     </main>
   </div>
@@ -158,13 +193,22 @@
       document.getElementById('hero-title').textContent = SITE.copy.heroTitle;
       document.getElementById('hero-body').textContent = SITE.copy.heroBody;
       document.getElementById('hero-note').textContent = SITE.copy.heroNote;
-      document.getElementById('use-case-list').innerHTML = Components.bulletList(SITE.copy.useCases);
+      document.getElementById('outcome-grid').innerHTML = SITE.copy.outcomes.map((card) => `
+        <article class="content-card">
+          <h3>${card.title}</h3>
+          <p>${card.body}</p>
+        </article>
+      `).join('');
+      document.getElementById('worker-task-list').innerHTML = Components.bulletList(SITE.copy.workerTasks);
+      document.getElementById('integration-list').innerHTML = Components.bulletList(SITE.copy.integrations);
+      document.getElementById('audience-list').innerHTML = Components.bulletList(SITE.copy.audiences);
       document.getElementById('feature-grid').innerHTML = SITE.copy.featureCards.map((card) => `
         <article class="content-card">
           <h3>${card.title}</h3>
           <p>${card.body}</p>
         </article>
       `).join('');
+      document.getElementById('package-name').textContent = SITE.package.name;
       document.getElementById('package-description').textContent = SITE.package.description;
       document.getElementById('package-bullets').innerHTML = Components.bulletList(SITE.package.bullets);
       document.getElementById('custom-bullets').innerHTML = Components.bulletList(SITE.custom.bullets);
